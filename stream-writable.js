@@ -37,6 +37,7 @@ const fs = require("node:fs/promises");
 
   //Wait for buff empty and executing call back
   stream.on("drain", () => {
+    console.log('Drained')
     // resume oour loop once our stream's internal buffer is empited
     writeMany();
   });

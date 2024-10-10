@@ -26,6 +26,7 @@ const fs = require("node:fs/promises");
       if(n % 2 === 0){
         if (!streamWrite.write(" " + n + " ")) {
           streamRead.pause();
+          
         }
       }
     })
@@ -36,4 +37,12 @@ const fs = require("node:fs/promises");
   streamWrite.on("drain", () => {
     streamRead.resume();
   });
+
+  streamWrite.on("finish", () => {
+    console.log("Done Write");
+  });
+
+  streamRead.on("end", () => {
+    console.log("Done Read");
+  })
 })();

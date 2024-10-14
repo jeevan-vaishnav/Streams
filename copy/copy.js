@@ -7,12 +7,12 @@ const fs = require('node:fs/promises');
  * 100% 
  * Execution time: 900ms
  */
-(async () =>{
-    const destFile = await fs.open('dest.txt', 'w')
+// (async () =>{
+//     const destFile = await fs.open('dest.txt', 'w')
 
-    const result = await fs.readFile('big-gigantic.txt');
+//     const result = await fs.readFile('big-gigantic.txt');
 
-    console.log(result)
+//     console.log(result)
     
-    await destFile.write(result);
-})();
+//     await destFile.write(result);
+// })();

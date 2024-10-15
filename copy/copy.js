@@ -16,3 +16,41 @@ const fs = require('node:fs/promises');
     
 //     await destFile.write(result);
 // })();
+
+/** new and fast */
+
+/**
+ * speed and space complexity
+ * speed BIG 0 n^2
+ * FileSize: 1gb
+ * Memory Usage: 30 mb
+ * 100% 
+ * Execution time: 2 s
+ */
+(
+    async ()=>{
+        console.time("copy");
+        const srcFile  = await fs.open('text-big.txt' , 'r');
+        const desFile = await fs.open('text-copy.txt','w');
+
+        let bytesRead = -1;
+
+        while(bytesRead !== 0){
+            const readResult = await srcFile.read()
+            bytesRead = readResult.bytesRead;
+
+            if(bytesRead !== 16384){
+                const indexOfNotFilled = readResult.buffer.indexOf(0);
+                const newBuffer = Buffer.alloc(indexOfNotFilled);
+                readResult.buffer.copy(newBuffer,0,0,indexOfNotFilled);
+                desFile.write(newBuffer)
+
+            }else{
+                desFile.write(readResult.buffer)
+                console.log(readResult.buffer)
+            }
+
+        }
+        console.timeEnd('copy');
+    }
+)();

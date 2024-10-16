@@ -27,30 +27,59 @@ const fs = require('node:fs/promises');
  * 100% 
  * Execution time: 2 s
  */
-(
-    async ()=>{
-        console.time("copy");
-        const srcFile  = await fs.open('text-big.txt' , 'r');
-        const desFile = await fs.open('text-copy.txt','w');
 
-        let bytesRead = -1;
+// (
+//     async ()=>{
+//         console.time("copy");
+//         const srcFile  = await fs.open('text-big.txt' , 'r');
+//         const desFile = await fs.open('text-copy.txt','w');
 
-        while(bytesRead !== 0){
-            const readResult = await srcFile.read()
-            bytesRead = readResult.bytesRead;
+//         let bytesRead = -1;
 
-            if(bytesRead !== 16384){
-                const indexOfNotFilled = readResult.buffer.indexOf(0);
-                const newBuffer = Buffer.alloc(indexOfNotFilled);
-                readResult.buffer.copy(newBuffer,0,0,indexOfNotFilled);
-                desFile.write(newBuffer)
+//         while(bytesRead !== 0){
+//             const readResult = await srcFile.read()
+//             bytesRead = readResult.bytesRead;
 
-            }else{
-                desFile.write(readResult.buffer)
-                console.log(readResult.buffer)
-            }
+//             if(bytesRead !== 16384){
+//                 const indexOfNotFilled = readResult.buffer.indexOf(0);
+//                 const newBuffer = Buffer.alloc(indexOfNotFilled);
+//                 readResult.buffer.copy(newBuffer,0,0,indexOfNotFilled);
+//                 desFile.write(newBuffer)
 
-        }
-        console.timeEnd('copy');
-    }
-)();
+//             }else{
+//                 desFile.write(readResult.buffer)
+//                 console.log(readResult.buffer)
+//             }
+
+//         }
+//         console.timeEnd('copy');
+//     }
+// )();
+
+
+/**
+ * Using Stream for
+ * FileSize:  
+ * Memeory Usage: 
+ * Execution Time: 
+ */
+
+(async()=>{
+    console.time('copy');
+    const srcFile = await fs.open('text-big.txt','r');
+    const destFile = await fs.open('text-copy.txt','w');
+
+    //create stream for read and write
+    const readStream = srcFile.createReadStream();
+    const writeStream = destFile.createWriteStream();
+
+    //read and write
+    readStream.pipe(writeStream)
+    /**
+     * readStream: this is the ref file
+     * pipe: That can help to read automatically and write into writeStream destFile
+     * 
+     */
+
+    console.timeEnd('copy');
+})()

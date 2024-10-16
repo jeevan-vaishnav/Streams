@@ -76,13 +76,13 @@ const fs = require('node:fs/promises');
     const readStream = srcFile.createReadStream();
     const writeStream = destFile.createWriteStream();
     
-    //read and write
+    console.log(readStream.readableFlowing)
     readStream.pipe(writeStream)
-    /**
-     * readStream: this is the ref file
-     * pipe: That can help to read automatically and write into writeStream destFile
-     * 
-     */
+    console.log(readStream.readableFlowing)
+    readStream.unpipe(writeStream);
+    console.log(readStream.readableFlowing)
+    readStream.pipe(writeStream);
+    console.log(readStream.readableFlowing)
 
     //End function 
     readStream.on('end',()=>{

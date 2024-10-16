@@ -58,6 +58,7 @@ const fs = require('node:fs/promises');
 
 
 /**
+ * This logic can apply in production
  * Using Stream for
  * FileSize:  
  * Memeory Usage: 
@@ -66,13 +67,15 @@ const fs = require('node:fs/promises');
 
 (async()=>{
     console.time('copy');
+    // print currnt time
+    // console.log("Start Time: " + new Date())
     const srcFile = await fs.open('text-big.txt','r');
     const destFile = await fs.open('text-copy.txt','w');
 
     //create stream for read and write
     const readStream = srcFile.createReadStream();
     const writeStream = destFile.createWriteStream();
-
+    
     //read and write
     readStream.pipe(writeStream)
     /**
@@ -80,6 +83,12 @@ const fs = require('node:fs/promises');
      * pipe: That can help to read automatically and write into writeStream destFile
      * 
      */
+
+    //End function 
+    readStream.on('end',()=>{
+        // console.log("End Time: " + new Date())
+        console.log('Reading end.')
+    })
 
     console.timeEnd('copy');
 })()

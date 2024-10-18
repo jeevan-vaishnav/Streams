@@ -1,3 +1,4 @@
+const {pipeline} = require('node:stream')
 const fs = require('node:fs/promises');
 
 /**
@@ -74,21 +75,28 @@ const fs = require('node:fs/promises');
 
     //create stream for read and write
     const readStream = srcFile.createReadStream();
-    const writeStream = destFile.createWriteStream();
+    const writeStream = destFile.createWriteStream();    
     
-    console.log(readStream.readableFlowing)
-    readStream.pipe(writeStream)
-    console.log(readStream.readableFlowing)
-    readStream.unpipe(writeStream);
-    console.log(readStream.readableFlowing)
-    readStream.pipe(writeStream);
-    console.log(readStream.readableFlowing)
+    // console.log(readStream.readableFlowing)
+    // readStream.pipe(writeStream)
+    // console.log(readStream.readableFlowing)
+    // readStream.unpipe(writeStream);
+    // console.log(readStream.readableFlowing)
+    // readStream.pipe(writeStream);
+    // console.log(readStream.readableFlowing)
 
     //End function 
-    readStream.on('end',()=>{
-        // console.log("End Time: " + new Date())
-        console.log('Reading end.')
+    // readStream.on('end',()=>{
+    //     console.log('Reading end.')
+    // })
+
+    //using pipeline
+    pipeline(readStream,writeStream,(err) =>{
+        console.log(err);
     })
+
 
     console.timeEnd('copy');
 })()
+
+// 3.49.52

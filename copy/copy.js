@@ -94,9 +94,5 @@ const fs = require('node:fs/promises');
     pipeline(readStream,writeStream,(err) =>{
         console.log(err);
     })
-
-
     console.timeEnd('copy');
 })()
-
-// 3.49.52
